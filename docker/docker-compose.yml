@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  apiwebserver:
+    build:
+      context: ./
+    working_dir: /var/www/html/api
+    ports:
+      - "8088:80"
+    volumes:
+      - ../:/var/www/html/api
+      - ./config/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./config/api.conf:/etc/apache2/sites-enabled/default.conf
+      - ./logs/apache2:/var/log/apache2
+    environment:
+      - APPLICATION_ENV=development

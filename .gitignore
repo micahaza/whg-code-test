@@ -1,0 +1,7 @@
+
+vendor/
+.idea
+.env
+.env.development
+.DS_STORE
+docker/logs/
