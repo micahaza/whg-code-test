@@ -17,7 +17,12 @@ class LobbyController
      */
     private $view;
 
-    public function __construct(PhpRenderer $view, Country $countryDao, Brand $brandDao, Category $categoryDao)
+    public function __construct(
+        PhpRenderer $view,
+        Country $countryDao,
+        Brand $brandDao,
+        Category $categoryDao
+    )
     {
         $this->view = $view;
         $this->countryDao = $countryDao;

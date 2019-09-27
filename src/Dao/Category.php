@@ -24,11 +24,6 @@ class Category
         $this->qb->select('id, name')
             ->from('category');
 
-        $res = $this->dbCasino->fetchAll($this->qb->getSQL());
-        $ret = [];
-        foreach($res as $item) {
-            $ret[] = [$item['id'], $item['name']];
-        }
-        return $ret;
+        return $this->dbCasino->fetchAll($this->qb->getSQL());
     }
 }

@@ -24,8 +24,6 @@ class Country
         $this->qb->select('DISTINCT gcb.country')
             ->from('game_country_block', 'gcb');
 
-            $res = $this->dbCasino->fetchAll($this->qb->getSQL());
-
-            return array_column($res, 'country');
+            return $this->dbCasino->fetchAll($this->qb->getSQL());
     }
 }

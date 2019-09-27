@@ -24,11 +24,6 @@ class Brand
         $this->qb->select('id, affiliate')
             ->from('brand');
 
-        $res = $this->dbCasino->fetchAll($this->qb->getSQL());
-        $ret = [];
-        foreach($res as $item) {
-            $ret[] = [$item['id'], $item['affiliate']];
-        }
-        return $ret;
+        return $this->dbCasino->fetchAll($this->qb->getSQL());
     }
 }
