@@ -6,6 +6,8 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\PhpRenderer;
 use WhiteHatApi\Dao\Country;
+use WhiteHatApi\Dao\Brand;
+use WhiteHatApi\Dao\Category;
 
 class LobbyController
 {
@@ -15,17 +17,20 @@ class LobbyController
      */
     private $view;
 
-    public function __construct(PhpRenderer $view, Country $countryDao)
+    public function __construct(PhpRenderer $view, Country $countryDao, Brand $brandDao, Category $categoryDao)
     {
         $this->view = $view;
         $this->countryDao = $countryDao;
+        $this->brandDao = $brandDao;
+        $this->categoryDao = $categoryDao;
     }
 
     public function getLobby(Request $request, Response $response, array $args)
     {
+        
         $countries = $this->countryDao->getCountries();
-        $brands = $this->getBrands();
-        $categories = $this->getCategories();
+        $brands = $this->brandDao->getBrands();
+        $categories = $this->categoryDao->getCategories();
 
         return $this->view->render($response, 'index.phtml', [
             'countries' => $countries,
@@ -33,31 +38,4 @@ class LobbyController
             'categories' => $categories
         ]);
     }
-
-    private function getBrands()
-    {
-
-        $brands = file_get_contents(__DIR__ . '/../brands.txt');
-        $brands = explode("\n", $brands);
-        $brands = array_map(function($item){
-            $line = str_replace("'", '', $item);
-            return explode(', ', $line);
-        }, $brands);
-        array_shift($brands);
-        return $brands;
-    }
-
-    private function getCategories()
-    {
-
-        $categories = file_get_contents(__DIR__ . '/../categories.txt');
-        $categories = explode("\n", $categories);
-        $categories = array_map(function($item){
-            $line = str_replace("'", '', $item);
-            return explode(', ', $line);
-        }, $categories);
-        return $categories;
-    }
-
-
 }
