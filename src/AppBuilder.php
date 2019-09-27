@@ -11,6 +11,7 @@ use WhiteHatApi\Controllers\LobbyController;
 use Slim\App;
 use WhiteHatApi\Controllers\GameController;
 use WhiteHatApi\Dao\Game;
+use WhiteHatApi\Dao\Country;
 
 class AppBuilder
 {
@@ -60,6 +61,11 @@ class AppBuilder
 		$container[Game::class] = function(Container $container) {
 		    return new Game($container->get('DB_CASINO'));
 		};
+
+		$container[Country::class] = function(Container $container) {
+			return new Country($container->get('DB_CASINO'));
+		};
+
         $container[GameController::class] = function(Container $container) {
             return new GameController($container->get(Game::class));
         };
@@ -69,7 +75,7 @@ class AppBuilder
         };
 
 		$container[LobbyController::class] = function(Container $container) {
-		    return new LobbyController($container->get(PhpRenderer::class));
+		    return new LobbyController($container->get(PhpRenderer::class), $container->get(Country::class));
 		};
 
 	}

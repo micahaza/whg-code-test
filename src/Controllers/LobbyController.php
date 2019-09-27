@@ -5,6 +5,7 @@ namespace WhiteHatApi\Controllers;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\PhpRenderer;
+use WhiteHatApi\Dao\Country;
 
 class LobbyController
 {
@@ -14,14 +15,15 @@ class LobbyController
      */
     private $view;
 
-    public function __construct(PhpRenderer $view)
+    public function __construct(PhpRenderer $view, Country $countryDao)
     {
         $this->view = $view;
+        $this->countryDao = $countryDao;
     }
 
     public function getLobby(Request $request, Response $response, array $args)
     {
-        $countries = $this->getCountries();
+        $countries = $this->countryDao->getCountries();
         $brands = $this->getBrands();
         $categories = $this->getCategories();
 
@@ -30,16 +32,6 @@ class LobbyController
             'brands' => $brands,
             'categories' => $categories
         ]);
-    }
-
-    private function getCountries()
-    {
-        $countries = file_get_contents(__DIR__ . '/../countries.txt');
-        $countries = explode("\n", $countries);
-        $countries = array_map(function($item){
-            return str_replace("'", '', $item);
-        }, $countries);
-        return $countries;
     }
 
     private function getBrands()
