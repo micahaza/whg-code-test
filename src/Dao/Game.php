@@ -19,33 +19,27 @@ class Game
         $this->qb = $this->dbCasino->createQueryBuilder();
     }
 
-    public function getGames($brand, $country, $category)
+    public function getGames($brand = null, $country = null, $category = null)
     {
-        $this->qb->select('g.name, g.launchcode, g.rtp')
+
+        $this->qb->select('g.id, g.name, g.launchcode, g.rtp')
             ->from('game', 'g')
             ->where('g.active = 1');
 
+        /*
+        $this->qb->select('g.id, g.name, g.launchcode, g.rtp')
+            ->leftJoin('g', 'game_country_block', 'gcb', 'g.launchcode = gcb.launchcode')
+            ->leftJoin('g', 'game_brand_block', 'gbb', 'g.launchcode = gbb.launchcode')
+            ->from('game', 'g')
+            ->where('gcb.country IS NULL')
+            ->andWhere('gbb.blocked_date IS NULL')
+            ->andWhere('g.active = 1');
+
             if(!empty($brand)) {
-                // $this->qb->innerJoin('g', 'brand_games', 'bg', 'g.launchcode = bg.launchcode');
-                // $this->qb->select('bg.hot, bg.new');
+                $this->qb->innerJoin('g', 'brand_games', 'bg', 'g.launchcode = bg.launchcode')
+                    ->where()
             }
+        */
             return $this->dbCasino->fetchAll($this->qb->getSQL(), $this->qb->getParameters());
     }
-
-    // public function getForKorpuszKod($korpuszKod, $terminal = null)
-    // {
-    //     $this->qb->select('a.*')
-    //         ->from('alkatreszek', 'a')
-    //         ->where('korpuszkod = :korpuszKod')
-    //         ->setParameter('korpuszKod', $korpuszKod);
-
-    //     if (!empty($terminal)) {
-    //         $this->qb->innerJoin('a', 'gyartasi_folyamat_alkatresz_status', 'gyfas', 'a.barcode = gyfas.barcode');
-    //         $this->qb->innerJoin('gyfas', 'gyartasi_folyamat_lepesek', 'gyfl', 'gyfas.lepes_id = gyfl.id');
-    //         $this->qb->andWhere('gyfl.terminal = :terminal');
-    //         $this->qb->setParameter('terminal', $terminal);
-    //     }
-
-    //     return $this->dbWood->fetchAll($this->qb->getSQL(), $this->qb->getParameters());
-    // }
 }
