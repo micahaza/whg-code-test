@@ -15,5 +15,8 @@ stop: ## Stops containers
 help: ## This help message
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' -e 's/:.*#/: #/' | column -t -s '##'
 
-ssh: ## SSH into web server container
+ssh-web: ## SSH into web server container
 	docker-compose exec apiwebserver /bin/bash
+
+ssh-mysql: ## SSH into mysql server container
+	docker-compose exec db /bin/bash
